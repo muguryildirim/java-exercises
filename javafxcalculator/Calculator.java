@@ -10,6 +10,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class Calculator extends Application {
+    private String operator = "";
+    private double num1 = 0;
+    private boolean startNewNumber = true;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -38,12 +42,58 @@ public class Calculator extends Application {
         for (int i = 0; i < buttons.length; i++) {
             for (int j = 0; j < buttons[i].length; j++) {
                 Button button = new Button(buttons[i][j]);
+                button.setOnAction(e -> handleButtonClick(display, button.getText()));
                 grid.add(button, j, i + 1);
             }
         }
 
         primaryStage.setScene(new Scene(grid, 250, 300));
         primaryStage.show();
+    }
+
+    private void handleButtonClick(TextField display, String value) {
+        if (value.matches("[0-9.]")) {
+            if (startNewNumber) {
+                display.setText(value);
+                startNewNumber = false;
+            } else {
+                display.setText(display.getText() + value);
+            }
+        } else if (value.equals("=")) {
+            calculate(display);
+        } else {
+            if (!operator.isEmpty()) {
+                calculate(display);
+            }
+            num1 = Double.parseDouble(display.getText());
+            operator = value;
+            startNewNumber = true;
+        }
+    }
+
+    private void calculate(TextField display) {
+        double num2 = Double.parseDouble(display.getText());
+        switch (operator) {
+            case "+":
+                num1 += num2;
+                break;
+            case "-":
+                num1 -= num2;
+                break;
+            case "*":
+                num1 *= num2;
+                break;
+            case "/":
+                if (num2 != 0) {
+                    num1 /= num2;
+                } else {
+                    display.setText("Error");
+                    num1 = 0;
+                }
+                break;
+        }
+        display.setText(String.valueOf(num1));
+        operator = "";
     }
 }
 
