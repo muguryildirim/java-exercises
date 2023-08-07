@@ -2,40 +2,42 @@ package BubbleSort;
 
 import java.util.Scanner;
 
-import static java.lang.System.*;
-
-public class Main
-{
+public class BubbleSort {
     public static void main(String[] args) {
-        int n, c, d, swap;
+        Scanner scanner = new Scanner(System.in);
 
-        Scanner s = new Scanner(in);
+        System.out.print("Input the number of integers to sort: ");
+        int n = scanner.nextInt();
 
-        out.println("Input number of integers to sort");
-        n = s.nextInt();
+        int[] array = new int[n];
 
-        int array[] = new int[n];
+        System.out.println("Enter " + n + " integers:");
 
-        out.println("Enter " + n + " integers" );
+        for (int i = 0; i < n; i++) {
+            array[i] = scanner.nextInt();
+        }
 
-        for(c = 0; c < n; c++)
-            array[c] = s.nextInt();
+        bubbleSort(array);
 
-        for(c = 0; c < (n - 1); c++)
-        {
-            for(d = 0; d < n - c - 1; d++)
-            {
-                if(array[d] > array[d + 1])
-                {
-                    swap = array[d];
-                    array[d] = array[d + 1];
-                    array[d + 1] = swap;
+        System.out.println("Sorted list of numbers:");
+
+        for (int num : array) {
+            System.out.println(num);
+        }
+    }
+
+    private static void bubbleSort(int[] array) {
+        int n = array.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (array[j] > array[j + 1]) {
+                    // Swap elements at j and j+1
+                    int temp = array[j];
+                    array[j] = array[j + 1];
+                    array[j + 1] = temp;
                 }
             }
         }
-        out.println("Sorted list of numbers");
-
-        for(c = 0; c < n; c++)
-            out.println(array[c]);
     }
 }
+
